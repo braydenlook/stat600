@@ -1,0 +1,76 @@
+---
+title: "SimpLinR Vignette"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{test}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(SimpLin)
+```
+
+SimpLin is a package that can be used to do perform simple linear regression.
+
+The function, `SimpLinR`, takes in two numeric vectors as argument. The first argument, `x`, is your data, and the second argument, `y`, is your response.
+
+The function returns a list containing the following outputs:
+
+ - Coefficient estimates $\hat \beta_0$ and $\hat \beta_1$.
+ - Standard errors and confidence intervals associated with the estimates.
+ - Predicted values $\hat y$.
+ - The residuals $e$.
+ 
+Let's create a dataset to show how it works.
+ 
+```{r}
+set.seed(100)
+beta0 = 3
+beta1 = 1.5
+n = 100
+x = rnorm(n, 0, 1)
+e = rnorm(n, 0, 2)
+y = beta0 + beta1 * x + e
+
+model = SimpLinR(x, y)
+```
+
+We can access the estimated coefficients of the returned list, which we've called `model`, by calling `model$coefficients`. The first entry is the estimate of the intercept, and the second entry is the estimate of the slope.
+
+```{r}
+paste("The intercept estimate is", round(model$coefficients[1], 3))
+
+paste("The slope estimate is", round(model$coefficients[2], 3))
+```
+
+We can access the predicted values by calling `model$predicted`. Here, we plot the fit alongside the raw data:
+ 
+```{r}
+plot(x, y)
+lines(x, model$predicted, col  = "red")
+legend("topleft", legend=c("Predicted Fit"),
+       col=c("red"), lty = 1, cex=0.8)
+```
+
+We can also extract the residuals to assess the normality of the errors:
+
+```{r}
+plot(model$residuals, model$predicted)
+```
+
+Finally, we can check how confident we are in our estimates by calling `model$SE` and `model$CI` to get the standard errors and confidence intervals, respectively.
+
+```{r}
+model$SE
+model$CI
+```
+
+In this case, both confidence intervals contain the true parameter values.

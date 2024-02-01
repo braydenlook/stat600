@@ -1,0 +1,15 @@
+Package: SimpLin
+Type: Package
+Title: Performs simple linear regression
+Version: 1.0
+Date: 2024-01-28
+Author: Brayden Look
+Maintainer: Brayden Look <brayden.look@colostate.edu>
+Description: Takes in a one-dimsensional vector of x values and a one-dimensional vector of y values (of the same size) and performs linear regression. Provides estimates of coefficients, predicted values, residuals, and more.
+License: None
+Imports: Rcpp (>= 1.0.12)
+LinkingTo: Rcpp, RcppArmadillo
+Suggests: 
+    knitr,
+    rmarkdown
+VignetteBuilder: knitr
